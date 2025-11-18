@@ -83,4 +83,16 @@ public class TareaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //Marcar la tarea como realizada
+    @PutMapping("/{id}/realizar")
+    @Operation(summary = "Marca una tarea como realizada")
+    public ResponseEntity<Tarea> marcarComoRealizada(@PathVariable Long id) {
+        return tareaService.buscarPorId(id)
+                .map(tarea -> {
+                    tarea.setRealizada(tarea.isRealizada() ? false : true);
+                    return ResponseEntity.ok(tareaService.guardar(tarea));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
